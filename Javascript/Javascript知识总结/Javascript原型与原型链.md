@@ -117,6 +117,7 @@
 所以查到属性的时候查到 `Object.prototype `就可以停止查找了。最后一张关系图更新：
 
 ![image.png](http://upload-images.jianshu.io/upload_images/1018021-0a52595953717c30.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
 顺便还要说一下，图中由相互关联的原型组成的链状结构就是原型链，也就是蓝色的这条线。
 
 参考：
