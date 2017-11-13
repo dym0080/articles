@@ -247,6 +247,12 @@ function removeRepeatArray(arr){
     return Array.from(new Set(arr))
 }
 ```
+#### 生成指定范围随机数
+```js
+function randomNum(min, max) {
+    return Math.floor(min + Math.random() * (max - min));
+}
+```
 
 ## 2.数组操作
 
@@ -427,6 +433,18 @@ function removeArrayForValue(arr,val,type){
     arr.filter(function(item){return type==='%'?item.indexOf(val)!==-1:item!==val})
 }
 ```
+#### 2.14 判断两个数组是否相等
+```js
+function arrayEqual(arr1, arr2) {
+    if (arr1 === arr2) return true;
+    if (arr1.length != arr2.length) return false;
+    for (var i = 0; i < arr1.length; ++i) {
+        if (arr1[i] !== arr2[i]) return false;
+    }
+    return true;
+}
+```
+
 ## 3.函数操作
 
 #### 3.1判断是否是一个函数
@@ -535,6 +553,12 @@ function hasClass(obj,classStr){
     return (arr.indexOf(classStr)==-1)?false:true;
 },
 ```
+或
+```js
+function hasClass(ele, cls) {
+    return (new RegExp('(\\s|^)' + cls + '(\\s|$)')).test(ele.className);
+}
+```
 #### 4.4添加类名
 ```js
 function addClass(obj,classStr){
@@ -607,6 +631,12 @@ function hide(obj){
     obj.style.display="none";
 }
 ```
+### 4.11获取滚动条距顶部的距离
+```js
+function getScrollTop() {
+    return (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+}
+```
 
 ## 5.其他
 
@@ -635,7 +665,7 @@ function setCookie(name,value,iDay){
     oDate.setDate(oDate.getDate()+iDay);
     document.cookie=name+'='+value+';expires='+oDate;
 }
-//获取cookie
+//获取cookie1
 function getCookie(name){
     var arr=document.cookie.split('; ');
     for(var i=0;i<arr.length;i++){
@@ -643,6 +673,17 @@ function getCookie(name){
         if(arr2[0]==name)
         {
             return arr2[1];
+        }
+    }
+    return '';
+}
+//获取cookie2
+function getCookie(name) {
+    var arr = document.cookie.replace(/\s/g, "").split(';');
+    for (var i = 0; i < arr.length; i++) {
+        var tempArr = arr[i].split('=');
+        if (tempArr[0] == name) {
+            return decodeURIComponent(tempArr[1]);
         }
     }
     return '';
@@ -754,7 +795,7 @@ function randomNumber(n1,n2){
     }  
 }
 ```
-#### 5.7 随进产生颜色
+#### 5.7 随机产生颜色
 ```js
 function randomColor(){
     //randomNumber是上面定义的函数
@@ -770,6 +811,12 @@ function randomColor(){
         color+='0123456789abcdef'[randomNumber(15)];
     }
     return color;
+}
+```
+或
+```js
+function randomColor() {
+    return '#' + ('00000' + (Math.random() * 0x1000000 << 0).toString(16)).slice(-6);
 }
 ```
 #### 5.8 Date日期时间部分
@@ -890,6 +937,116 @@ String.prototype.trim=function(type){
 ```
 所以在原生对象原型的修改很不推荐！至少很多的公司禁止这样操作！
 
+#### 5.11获取浏览器版本
+```js
+function getExplore() {
+    var sys = {},
+        ua = navigator.userAgent.toLowerCase(),
+        s;
+    (s = ua.match(/rv:([\d.]+)\) like gecko/)) ? sys.ie = s[1]:
+        (s = ua.match(/msie ([\d\.]+)/)) ? sys.ie = s[1] :
+        (s = ua.match(/edge\/([\d\.]+)/)) ? sys.edge = s[1] :
+        (s = ua.match(/firefox\/([\d\.]+)/)) ? sys.firefox = s[1] :
+        (s = ua.match(/(?:opera|opr).([\d\.]+)/)) ? sys.opera = s[1] :
+        (s = ua.match(/chrome\/([\d\.]+)/)) ? sys.chrome = s[1] :
+        (s = ua.match(/version\/([\d\.]+).*safari/)) ? sys.safari = s[1] : 0;
+    // 根据关系进行判断
+    if (sys.ie) return ('IE: ' + sys.ie)
+    if (sys.edge) return ('EDGE: ' + sys.edge)
+    if (sys.firefox) return ('Firefox: ' + sys.firefox)
+    if (sys.chrome) return ('Chrome: ' + sys.chrome)
+    if (sys.opera) return ('Opera: ' + sys.opera)
+    if (sys.safari) return ('Safari: ' + sys.safari)
+    return 'Unkonwn'
+}
+```
+#### 5.12获取操作系统类型
+```js
+function getOS() {
+    var userAgent = 'navigator' in window && 'userAgent' in navigator && navigator.userAgent.toLowerCase() || '';
+    var vendor = 'navigator' in window && 'vendor' in navigator && navigator.vendor.toLowerCase() || '';
+    var appVersion = 'navigator' in window && 'appVersion' in navigator && navigator.appVersion.toLowerCase() || '';
+
+    if (/mac/i.test(appVersion)) return 'MacOSX'
+    if (/win/i.test(appVersion)) return 'windows'
+    if (/linux/i.test(appVersion)) return 'linux'
+    if (/iphone/i.test(userAgent) || /ipad/i.test(userAgent) || /ipod/i.test(userAgent)) 'ios'
+    if (/android/i.test(userAgent)) return 'android'
+    if (/win/i.test(appVersion) && /phone/i.test(userAgent)) return 'windowsPhone'
+}
+```
+#### 5.13深拷贝
+```js
+/**
+ * @desc 深拷贝，支持常见类型
+ * @param {Any} values
+ */
+function deepClone(values) {
+    var copy;
+
+    // Handle the 3 simple types, and null or undefined
+    if (null == values || "object" != typeof values) return values;
+
+    // Handle Date
+    if (values instanceof Date) {
+        copy = new Date();
+        copy.setTime(values.getTime());
+        return copy;
+    }
+
+    // Handle Array
+    if (values instanceof Array) {
+        copy = [];
+        for (var i = 0, len = values.length; i < len; i++) {
+            copy[i] = deepClone(values[i]);
+        }
+        return copy;
+    }
+
+    // Handle Object
+    if (values instanceof Object) {
+        copy = {};
+        for (var attr in values) {
+            if (values.hasOwnProperty(attr)) copy[attr] = deepClone(values[attr]);
+        }
+        return copy;
+    }
+
+    throw new Error("Unable to copy values! Its type isn't supported.");
+}
+```
+#### 5.14判断对象是否为空
+```js
+function isEmptyObject(obj) {
+    if (!obj || typeof obj !== 'object' || Array.isArray(obj))
+        return false
+    return !Object.keys(obj).length
+}
+```
+#### 5.15 判断是否是邮箱
+```js
+function isEmail(str) {
+    return /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/.test(str);
+}
+```
+#### 5.16 判断是否为身份证号
+```js
+function isIdCard(str) {
+    return /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/.test(str)
+}
+```
+#### 5.17 判断是否为手机号
+```js
+function isPhoneNum(str) {
+    return /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/.test(str)
+}
+```
+#### 5.18 判断是否为URL地址
+```js
+function isUrl(str) {
+    return /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/i.test(str);
+}
+```
 
 ## 本文收集来源
 - [编写自己的代码库（javascript常用实例的实现与封装）](https://segmentfault.com/a/1190000010225928),[对应的GITHUB地址](https://github.com/chenhuiYj/ec-do/blob/master/ec-do.js)
