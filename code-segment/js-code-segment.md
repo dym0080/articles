@@ -1,3 +1,4 @@
+
 ## 1.字符串操作
 #### 1.1使用+将字符串转换成数字
 这个技巧非常有用，其非常简单，可以交字符串数据转换成数字，不过其只适合用于字符串数据，否则将返回`NaN`，比如下面的示例：
@@ -207,7 +208,7 @@ function checkPwd(str) {
     return nowLv;
 }
 ```
-#### 1.10随机码([toString详解](http://www.runoob.com/jsref/jsref-tostring-number.html))
+#### 1.10随机码
 ```js
 //count取值范围0-36
 
