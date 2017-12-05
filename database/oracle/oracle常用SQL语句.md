@@ -1,4 +1,6 @@
 
+
+
 ## 一、Oracle数据库操作
 #### 1. 创建数据库
 create database dbname
@@ -164,8 +166,129 @@ exp user/pwd@orcl file=d:\backup\bck.dmp owner=(system,sys)
   ```sql
   insert into table_name_new(column1,column2...) select column1,column2... from table_name_old
   ```
-  ## 四、Oracle其他常用操作
+## 四、Oracle其他常用操作
+
+### 提高oracle更新效率的四种解决方案
+
+#### 标准update语法
+
+当你需要更新的表是单个或者被更新的字段不需要关联其他表带过来，则最后选择标准的`update`语句，速度最快，稳定性最好，并返回影响条数。如果`where`条件中的字段加上索引，那么更新效率就更高。但对需要关联表更新字段时，`update`的效率就非常差。
+  
+#### inline view更新法（没有实践过）
+
+inline view更新法就是更新一个临时建立的视图。括号里通过关联两表建立一个视图，set中设置好更新的字段。这个解决方法比写法较直观且执行速度快。但表tb2的主键一定要在where条件中，并且是以“=”来关联被更新表，否则报一下错误
+
+```sql
+update (select a.code as code1 ,b.code as code2 from tb1 a,tb2 b where a.id=b.id )set code1=code2
+```
+#### merge更新法
+MERGE INTO是Oracle 9i以后才出现的新的功能。那这个功能 是什么呢？简单来说，就是：“有则更新，无则插入”,用来合并UPDATE和INSERT语句.通过MERGE语句，根据一张表或子查询的连接条件对另外一张表进行查询，连接条件匹配上的进行UPDATE，无法匹配的执行INSERT。这个语法仅需要一次全表扫描就完成了全部工作，执行效率要高于INSERT＋UPDATE。
+语法：
+MERGE INTO [your table-name] [rename your table here]
+
+USING ( [write your query here] )[rename your query-sql and using just like a table]
+
+ON ([conditional expression here] AND [...]...)
+
+WHEN MATHED THEN [here you can execute some update sql or something else ]
+
+WHEN NOT MATHED THEN [execute something else here ! ]
+
+例子
+```sql
+-- eg1:两个表fzq1和fzq
+--更新表fzq1使得id相同的记录中chengji字段＋1，并且更新name字段。  
+--如果id不相同，则插入到表fzq1中.  
+--将fzq1表中男生记录的成绩＋1，女生插入到表fzq1中  
+merge into fzq1  aa     --fzq1表是需要更新的表  
+using fzq bb            -- 关联表  
+on (aa.id=bb.id)        --关联条件  
+when matched then       --匹配关联条件，作更新处理  
+update set  
+aa.chengji=bb.chengji+1,  
+aa.name=bb.name         --此处只是说明可以同时更新多个字段。  
+when not matched then    --不匹配关联条件，作插入处理。如果只是作更新，下面的语句可以省略。  
+insert values( bb.id, bb.name, bb.sex,bb.kecheng,bb.chengji);  
+--可以自行查询fzq1表。  
+```
+```sql
+-- eg2:三个表
+/*涉及到多个表关联的例子，我们以三个表为例，只是作更新处理，不做插入处理。当然也可以只做插入处理*/  
+--将fzq1表中女生记录的成绩＋1，没有直接去sex字段。而是fzq和fzq2关联。  
+merge into fzq1  aa     --fzq1表是需要更新的表  
+using (select fzq.id,fzq.chengji   
+       from fzq join fzq2  
+       on fzq.id=fzq2.id) bb  -- 数据集  
+on (aa.id=bb.id)        --关联条件  
+when matched then       --匹配关联条件，作更新处理  
+update set  
+aa.chengji=bb.chengji+1  
+--可以自行查询fzq1表。  
+```
+
+```sql
+-- eg3: 不能做的事情,不能更新条件字段
+merge into fzq1  aa      
+using fzq bb             
+on (aa.id=bb.id)          
+when matched then         
+update set  
+aa.id=bb.id+1  
+/*系统提示：  
+ORA-38104: Columns referenced in the ON Clause cannot be updated: "AA"."ID"  
+我们不能更新on (aa.id=bb.id)关联条件中的字段*/  
+update fzq1   
+set  id=(select id+1 from fzq where fzq.id=fzq1.id)  
+where id in  
+(select id from fzq)  
+--使用update就可以更新.  
+```
+
+```sql
+-- eg: 原表中不想更新的字段
+merge into t_eir_feetmp  aa       
+using t_eir_feetmp2 bb              
+on (aa.eir_fee_id=bb.eir_fee_id)  
+when matched then        
+update set  
+aa.fee_amt='0',  
+aa.currency_cd='B'  
+where aa.fee_nm<>'单证费'   --不更新这一列的值  
+when not matched then     
+insert values(bb.eir_fee_id,bb.fee_cd,bb.fee_nm,bb.currency_cd,bb.fee_amt,null);  
+```
+#### 快速游标更新法
+
+语法：
+
+begin
+for crin (查询语句)loop –-循环
+--更新语句（根据查询出来的结果集合）
+end loop; --结束循环
+end;
+
+oracle支持快速游标，不需要定义直接把游标写到for循环中，这样就方便了我们批量更新数据。再加上oracle的rowid物理字段（oracle默认给每个表都有rowid这个字段，并且是唯一索引），可以快速定位到要更新的记录上。
+
+例如：
+```sql
+begin
+for crin (select a.rowid,b.join_statefrom t_join_situation a,t_people_info b
+where a.people_number=b.people_number
+and a.year='2011' and a.city_number='M00000' and a.town_number='M51000')loop
+update t_join_situationset join_state=cr.join_statewhere
+rowid = cr.rowid;
+end loop;
+end;
+```
+使用快速游标的好处很多，可以支持复杂的查询语句，更新准确，无论数据多大更新效率仍然高，但执行后不返回影响行数。
+
+四种方案对比：
+| 方案            | 建议          |
+| ----------------|:-------------:|
+|标准update语法   |单表更新或较简单的语句采用使用此方案更优。|
+|inline view更新法|两表关联且被更新表通过关联表主键关联的，采用此方案更优。|
+|merge更新法      |两表关联且被更新表不是通过关联表主键关联的，采用此方案更优。|
+|快速游标更新法    |多表关联且逻辑复杂的，采用此方案更优。|
     
-    
-  ##### 参考
-  - [Oracle 数据库常用操作语句大全](http://www.cnblogs.com/1312mn/archive/2017/11/09/7799732.html) 
+## 参考资料
+* [Oracle 数据库常用操作语句大全](http://www.cnblogs.com/1312mn/archive/2017/11/09/7799732.html) 
