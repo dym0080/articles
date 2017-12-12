@@ -377,3 +377,139 @@ my answer:
 # -*- coding: utf-8 -*-
 # 暂时不做，后面先去研究什么是汉诺塔
 ```
+## 高级特性
+
+### 切片
+
+对这种经常取指定索引范围的操作，用循环十分繁琐，因此，Python提供了切片（Slice）操作符`:`，能大大简化这种操作。可使用切片的对象有list、tuple、str。
+```py
+L1 = list(range(100)) # [0, 1, 2, 3, ..., 99]
+
+# 取L1的前10个数
+L1[:10]           # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] 
+L1[0:10]          # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] 
+
+# 取L1的前10个数
+L1[-10:]          #[90, 91, 92, 93, 94, 95, 96, 97, 98, 99] 
+
+# 前11-20个数
+L1[10:20]         #[10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+
+# 前10个数，每两个取一个
+L1[:10:2]         # [0, 2, 4, 6, 8]
+
+# 所有数，每5个取一个
+L[::5] # [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95]
+
+(0, 1, 2, 3, 4, 5)[:3] # (0, 1, 2)
+'ABCDEFG'[:3]     # 'ABC'
+```
+有了切片操作，很多地方循环就不再需要了。Python的切片非常灵活，一行代码就可以实现很多行循环才能完成的操作。
+
+### 迭代
+如果给定一个list或tuple，我们可以通过for循环来遍历这个list或tuple，这种遍历我们称为迭代（Iteration）。
+
+可以看出，Python的for循环抽象程度要高于C的`for`循环，因为Python的`for`循环不仅可以用在list或tuple上，还可以作用在其他可迭代对象上。
+
+list这种数据类型虽然有下标，但很多其他数据类型是没有下标的，但是，只要是可迭代对象，无论有无下标，都可以迭代，比如dict就可以迭代：
+
+```py
+d = {'a': 1, 'b': 2, 'c': 3}
+for key in d
+    print(key) 
+    
+# 输出：    
+# a
+# b
+# c
+```
+默认情况下，dict迭代的是key。如果要迭代value，可以用`for value in d.values()`，如果要同时迭代key和value，可以用`for k, v in d.items()`。
+
+如何判断一个对象是可迭代对象呢？方法是通过collections模块的Iterable类型判断：
+```py
+from collections import Iterable
+isinstance('abc', Iterable)   # True
+isinstance([1,2,3], Iterable) # True
+isinstance(123, Iterable)     # False
+```
+for循环里，同时引用了两个变量，在Python里是很常见的，比如下面的代码：
+```py
+for x, y in [(1, 1), (2, 4), (3, 9)]:
+    print(x, y)
+```
+输出：
+1 1
+2 4
+3 9
+
+### 列表生成式
+
+列表生成式即List Comprehensions，是Python内置的非常简单却强大的可以用来创建list的生成式。即可以在list中使用for来遍历,例如：
+```py
+[x * x for x in range(1, 11)] # [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+
+[x * x for x in range(1, 11) if x % 2 == 0] # [4, 16, 36, 64, 100]
+
+[m + n for m in 'ABC' for n in 'XYZ'] # ['AX', 'AY', 'AZ', 'BX', 'BY', 'BZ', 'CX', 'CY', 'CZ']
+
+d = {'x': 'A', 'y': 'B', 'z': 'C' }
+[k + '=' + v for k, v in d.items()] # ['y=B', 'x=A', 'z=C']
+
+L = ['Hello', 'World', 'IBM', 'Apple']
+[s.lower() for s in L] # ['hello', 'world', 'ibm', 'apple']
+```
+
+### 练习
+```py
+L = ['Hello', 'World', 18, 'Apple', None]
+a= [s.lower() for s in L if isinstance(s,str)] 
+print(a) # ['hello', 'world', 'apple']
+```
+
+### 小结
+运用列表生成式，可以快速生成list，可以通过一个list推导出另一个list，而代码却十分简洁。
+
+### 生成器
+
+通过列表生成式，我们可以直接创建一个列表。但是，受到内存限制，列表容量肯定是有限的。而且，创建一个包含100万个元素的列表，不仅占用很大的存储空间，如果我们仅仅需要访问前面几个元素，那后面绝大多数元素占用的空间都白白浪费了。
+
+所以，如果列表元素可以按照某种算法推算出来，那我们是否可以在循环的过程中不断推算出后续的元素呢？这样就不必创建完整的list，从而节省大量的空间。在Python中，这种一边循环一边计算的机制，称为生成器：generator。
+
+要创建一个generator，有很多种方法。第一种方法很简单，只要把一个列表生成式的[]改成()，就创建了一个generator：
+```py
+L = [x * x for x in range(10)]
+L # [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+g = (x * x for x in range(10))
+g # generator object <genexpr> at 0x000001D58B221EB8>
+```
+创建`L`和`g`的区别仅在于最外层的`[]`和`()`，`L`是一个list，而`g`是一个generator。
+
+我们可以直接打印出list的每一个元素，但我们怎么打印出generator的每一个元素呢？
+
+如果要一个一个打印出来，可以通过next()函数获得generator的下一个返回值：
+```py
+next(g) # 0
+next(g) # 1
+next(g) # 4
+next(g) # 6
+next(g) # 16
+next(g) # 25
+next(g) # 36
+...  #没有更多的元素时，抛出StopIteration的错误。
+```
+
+当然，上面这种不断调用next(g)实在是太变态了，正确的方法是使用for循环，因为generator也是可迭代对象
+
+```py
+def fib(max):
+    n, a, b = 0, 0, 1
+    while n < max:
+        yield b
+        a, b = b, a + b
+        n = n + 1
+    return 'done'
+```
+这就是定义generator的另一种方法。如果一个函数定义中包含yield关键字，那么这个函数就不再是一个普通函数，而是一个generator：
+
+### 迭代器
