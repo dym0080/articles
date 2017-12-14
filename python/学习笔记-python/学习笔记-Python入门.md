@@ -511,5 +511,211 @@ def fib(max):
     return 'done'
 ```
 这就是定义generator的另一种方法。如果一个函数定义中包含yield关键字，那么这个函数就不再是一个普通函数，而是一个generator：
+```py
+f = fib(6)
+f # <generator object fib at 0x104feaaa0>
+```
+这里，最难理解的就是generator和函数的执行流程不一样。函数是顺序执行，遇到return语句或者最后一行函数语句就返回。而变成generator的函数，在每次调用next()的时候执行，遇到yield语句返回，再次执行时从上次返回的yield语句处继续执行。
+
+#### 小结
+
+generator是非常强大的工具，在Python中，**可以简单地把列表生成式改成generator，也可以通过函数实现复杂逻辑的generator**。
+
+要理解generator的工作原理，它是在`for`循环的过程中不断计算出下一个元素，并在适当的条件结束`for`循环。对于函数改成的generator来说，遇到return语句或者执行到函数体最后一行语句，就是结束generator的指令，`for`循环随之结束。
+
+请注意区分普通函数和generator函数，普通函数调用直接返回结果：
+
+```py
+r = abs(6)
+r # 6
+```
+generator函数的“调用”实际返回一个generator对象：
+
+```py
+g = fib(6)
+g # <generator object fib at 0x1022ef948>
+```
 
 ### 迭代器
+
+我们已经知道，可以直接作用于for循环的数据类型有以下几种：一类是集合数据类型，如`list`、`tuple`、`dict`、`set`、`str`等；一类是`generator`，包括生成器和带`yield`的generator function。
+
+凡是可作用于`for`循环的对象都是`Iterable`类型；
+
+凡是可作用于`next()`函数的对象都是`Iterator`类型，它们表示一个惰性计算的序列；
+
+集合数据类型如`list`、`dict`、`str`等是`Iterable`但不是`Iterator`，不过可以通过`iter()`函数获得一个`Iterator`对象。**`Iterable`是可迭代对象，`Iterator`是迭代器**。
+
+Python的`for`循环本质上就是通过不断调用`next()`函数实现的。
+
+生成器不但可以作用于for循环，还可以被next()函数不断调用并返回下一个值，直到最后抛出StopIteration错误表示无法继续返回下一个值了。可以被next()函数调用并不断返回下一个值的对象称为迭代器：Iterator
+
+```py
+from collections import Iterable
+from collections import Iterator
+
+isinstance([], Iterable) # True
+isinstance([], Iterator) # False
+isinstance(iter([]), Iterator) # True
+
+isinstance({}, Iterable) # True
+isinstance({}, Iterator) # False
+isinstance(iter({}), Iterator) # True
+
+isinstance('abc', Iterable) # True
+isinstance('abc', Iterator) # False
+isinstance(iter('abc'), Iterator) # True
+
+isinstance((x for x in range(10)), Iterable) # True
+isinstance((x for x in range(10)), Iterator) # True
+```
+
+## 函数式编程
+
+函数是Python内建支持的一种封装，我们通过把大段代码拆成函数，通过一层一层的函数调用，就可以把复杂任务分解成简单的任务，这种分解可以称之为面向过程的程序设计。函数就是面向过程的程序设计的基本单元。
+
+> 在项目管理中有WBS概念，也是把大的任务分解一个个小的任务，即也是把复杂的任务分解成更小的简单的任务。在生活中何尝不是一样，把大的目标分解很多个小目标，这样就不会产生畏惧，通过一步一步完成小目标，每天可以看到进步，还可以提升自信心，这样看似很难实现的大目标其实在慢慢靠近了。
+
+而函数式编程（请注意多了一个“式”字）——Functional Programming，虽然也可以归结到面向过程的程序设计，但其思想更接近**数学计算**。
+
+我们首先要搞明白计算机（Computer）和计算（Compute）的概念。
+
+在计算机的层次上，CPU执行的是加减乘除的指令代码，以及各种条件判断和跳转指令，所以，**汇编语言是最贴近计算机的语言**。
+
+而**计算则指数学意义上的计算，越是抽象的计算，离计算机硬件越远**。
+
+**对应到编程语言，就是越低级的语言，越贴近计算机，抽象程度低，执行效率高，比如C语言；越高级的语言，越贴近计算，抽象程度高，执行效率低，比如Lisp语言**。
+
+函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。
+
+函数式编程的一个特点就是，允许把函数本身作为参数传入另一个函数，还允许返回一个函数！
+
+Python对函数式编程提供部分支持。由于Python允许使用变量，因此，Python不是纯函数式编程语言。
+
+### 高阶函数
+
+#### Map/Reduce
+
+#### filter
+
+#### sorted
+
+### 返回函数
+
+一个函数可以返回一个计算结果，也可以返回一个函数。返回一个函数时，牢记该函数并未执行，返回函数中不要引用任何可能会变化的变量。
+> 既然函数里面可以定义函数，函数可以作为返回值返回，那么也就有闭包的概念，跟JS一样。
+
+### 匿名函数
+
+当我们在传入函数时，有些时候，不需要显式地定义函数，直接传入匿名函数更方便。在Python中，对匿名函数提供了有限支持。还是以`map()`函数为例，计算`f(x)=x2`时，除了定义一个`f(x)`的函数外，还可以直接传入匿名函数：
+```py
+ list(map(lambda x: x * x, [1, 2, 3, 4, 5, 6, 7, 8, 9])) #[1, 4, 9, 16, 25, 36, 49, 64, 81]
+```
+通过对比可以看出，匿名函数lambda x: x * x实际上就是：
+```py
+def f(x):
+     return x * x
+```
+关键字`lambda`表示匿名函数，冒号前面的`x`表示函数参数。匿名函数有个限制，就是只能有一个表达式，不用写return，返回值就是该表达式的结果。用匿名函数有个好处，因为函数没有名字，不必担心函数名冲突。此外，匿名函数也是一个函数对象，也可以把匿名函数赋值给一个变量，再利用变量来调用该函数,也可以把匿名函数作为返回值返回。
+
+Python对匿名函数的支持有限，只有一些简单的情况下可以使用匿名函数。
+
+#### 练习
+请用匿名函数改造下面的代码：
+def is_odd(n):
+    return n % 2 == 1
+
+L = list(filter(is_odd, range(1, 20)))
+
+my answer:
+```py
+L = list(filter(lambda x:x%2==1, range(1, 20)))
+```
+
+### 装饰器
+
+> 没怎么看
+
+### 偏函数
+当函数的参数个数太多，需要简化时，使用`functools.partial`可以创建一个新的函数，这个新函数可以固定住原函数的部分参数，从而在调用时更简单。
+
+## 模块
+
+### 使用模块
+
+### 安装第三方模块
+
+## 面向对象编程
+
+### 类和实例
+> 概念和C#差不多，只是写法有点不同
+定义一个学生类
+```py
+class Student(object):
+
+    def __init__(self, name, score):
+        self.name = name
+        self.score = score
+```
+
+### 访问限制
+
+如果要让内部属性不被外部访问，可以把属性的名称前加上两个下划线`__`，在Python中，实例的变量名如果以`__`开头，就变成了一个私有变量（private），只有内部可以访问，外部不能访问，所以，我们把Student类改一改：
+```py
+class Student(object):
+    ...
+
+    def get_name(self):
+        return self.__name
+
+    def get_score(self):
+        return self.__score
+```
+
+### 继承和多态
+
+### 获取对象信息
+
+使用`type()`获取对象类型
+
+使用`isinstance()`获取`class`类型
+
+使用使用`dir()`获取对象的所有属性和方法，返回是一个包含字符串的list。仅仅把属性和方法列出来是不够的，配合`getattr()`、`setattr()`以及`hasattr()`，我们可以直接操作一个对象的状态
+
+### 实例属性和类属性
+
+由于Python是动态语言，根据类创建的实例可以任意绑定属性。所以在Python中
+既可以在类上绑定属性，也可以在类的实例上绑定属性，在类的实例上绑定的属性不属于该类只属于该实例，在类上绑定的属性属于所有该类的实例。
+
+同理，可以给类的某个实例绑定方法，该实例的属性和方法只属于该实例，不属于其他实例和该实例所属的类。
+
+在编写程序的时候，千万不要对实例属性和类属性使用相同的名字，因为相同名称的实例属性将屏蔽掉类属性，但是当你删除实例属性后，再使用相同的名称，访问到的将是类属性。
+
+## 面向对象高级编程
+
+数据封装、继承和多态只是面向对象程序设计中最基础的3个概念。在Python中，面向对象还有很多高级特性，允许我们写出非常强大的功能。
+
+我们会讨论多重继承、定制类、元类等概念。
+
+## 使用`__slots__`
+
+正常情况下，当我们定义了一个class，创建了一个class的实例后，我们可以给该实例绑定任何属性和方法，这就是**动态语言**的灵活性。
+
+```py
+class Student(object):
+    pass
+```
+动态给Student绑定方法:
+
+```py
+def set_score(self, score):
+    self.score = score
+```
+通常情况下，上面的`set_score`方法可以直接定义在class中，但动态绑定允许我们在程序运行的过程中动态给class加上功能，这在静态语言中很难实现。
+
+Python允许在定义class的时候，定义一个特殊的`__slots__`变量，来限制该class实例能添加的属性,比如，只允许对Student实例添加name和age属性：
+
+```py
+class Student(object):
+    __slots__ = ('name', 'age') # 用tuple定义允许绑定的属性名称
+```
