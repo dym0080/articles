@@ -1,3 +1,115 @@
+<!-- TOC -->
+
+- [Python 教程](#python-教程)
+    - [Python简介](#python简介)
+    - [安装 Python](#安装-python)
+    - [第一个Python程序](#第一个python程序)
+        - [使用文本编辑器](#使用文本编辑器)
+    - [Python 代码运行助手](#python-代码运行助手)
+    - [输入和输出](#输入和输出)
+    - [Python基础](#python基础)
+        - [数据类型和变量](#数据类型和变量)
+            - [数据类型](#数据类型)
+            - [变量](#变量)
+        - [字符串和编码](#字符串和编码)
+        - [使用list和tuple](#使用list和tuple)
+            - [list](#list)
+            - [tuple](#tuple)
+            - [小结](#小结)
+        - [条件判断](#条件判断)
+        - [循环](#循环)
+        - [使用dict和set](#使用dict和set)
+            - [dict](#dict)
+            - [set](#set)
+            - [小结](#小结-1)
+    - [函数](#函数)
+        - [调用函数](#调用函数)
+        - [定义函数](#定义函数)
+        - [函数的参数](#函数的参数)
+            - [位置参数(必选参数)](#位置参数必选参数)
+            - [默认参数](#默认参数)
+            - [可变参数](#可变参数)
+            - [关键字参数](#关键字参数)
+            - [命名关键字参数](#命名关键字参数)
+            - [参数组合](#参数组合)
+            - [练习](#练习)
+            - [小结](#小结-2)
+        - [递归函数](#递归函数)
+            - [练习](#练习-1)
+    - [高级特性](#高级特性)
+        - [切片](#切片)
+        - [迭代](#迭代)
+        - [列表生成式](#列表生成式)
+        - [练习](#练习-2)
+        - [小结](#小结-3)
+        - [生成器](#生成器)
+            - [小结](#小结-4)
+        - [迭代器](#迭代器)
+    - [函数式编程](#函数式编程)
+        - [高阶函数](#高阶函数)
+            - [Map/Reduce](#mapreduce)
+            - [filter](#filter)
+            - [sorted](#sorted)
+        - [返回函数](#返回函数)
+        - [匿名函数](#匿名函数)
+            - [练习](#练习-3)
+        - [装饰器](#装饰器)
+        - [偏函数](#偏函数)
+    - [模块](#模块)
+        - [使用模块](#使用模块)
+        - [安装第三方模块](#安装第三方模块)
+    - [面向对象编程](#面向对象编程)
+        - [类和实例](#类和实例)
+        - [访问限制](#访问限制)
+        - [继承和多态](#继承和多态)
+        - [获取对象信息](#获取对象信息)
+        - [实例属性和类属性](#实例属性和类属性)
+    - [面向对象高级编程](#面向对象高级编程)
+    - [使用`__slots__`](#使用__slots__)
+        - [使用`@property`](#使用property)
+            - [练习](#练习-4)
+        - [多重继承](#多重继承)
+        - [定制类](#定制类)
+        - [使用枚举类](#使用枚举类)
+    - [错误、调试和测试](#错误调试和测试)
+        - [错误处理](#错误处理)
+        - [调试](#调试)
+        - [单元测试](#单元测试)
+        - [文档测试](#文档测试)
+    - [IO编程（同步）](#io编程同步)
+        - [文件读写](#文件读写)
+        - [`StringIO`和`BytesIO`](#stringio和bytesio)
+        - [操作文件和目录](#操作文件和目录)
+        - [序列化](#序列化)
+    - [进程和线程](#进程和线程)
+        - [多进程](#多进程)
+        - [多线程](#多线程)
+        - [ThreadLocal](#threadlocal)
+        - [分布式进程](#分布式进程)
+    - [正则表达式](#正则表达式)
+    - [常用内置模块](#常用内置模块)
+        - [`datetime`](#datetime)
+        - [`collections`](#collections)
+        - [base64](#base64)
+        - [struct](#struct)
+        - [hashlib](#hashlib)
+            - [hmac](#hmac)
+        - [itertools](#itertools)
+        - [contextlib](#contextlib)
+        - [urllib](#urllib)
+        - [XML](#xml)
+        - [HTMLParser](#htmlparser)
+    - [常用第三方模块](#常用第三方模块)
+    - [virtualenv](#virtualenv)
+    - [图形界面](#图形界面)
+    - [网络编程](#网络编程)
+        - [TCP/IP简介](#tcpip简介)
+        - [TCP编程](#tcp编程)
+        - [UDP编程](#udp编程)
+
+<!-- /TOC -->
+
+
 * 学习来源：[Python教程](https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000) by廖雪峰
 
 # Python 教程
@@ -691,6 +803,12 @@ class Student(object):
 
 在编写程序的时候，千万不要对实例属性和类属性使用相同的名字，因为相同名称的实例属性将屏蔽掉类属性，但是当你删除实例属性后，再使用相同的名称，访问到的将是类属性。
 
+实例属性属于各个实例所有，互不干扰；
+
+类属性属于类所有，所有实例共享一个属性；
+
+不要对实例属性和类属性使用相同的名字，否则将产生难以发现的错误。
+
 ## 面向对象高级编程
 
 数据封装、继承和多态只是面向对象程序设计中最基础的3个概念。在Python中，面向对象还有很多高级特性，允许我们写出非常强大的功能。
@@ -719,3 +837,294 @@ Python允许在定义class的时候，定义一个特殊的`__slots__`变量，�
 class Student(object):
     __slots__ = ('name', 'age') # 用tuple定义允许绑定的属性名称
 ```
+然后，我们试试：
+
+```py
+s=Student()
+s.name='Lisa'
+s.age=30
+s.score=96 # 报错 AttributeError: 'Student' object has no attribute 'score'
+```
+
+由于`'score'`没有被放到`__slots__`中，所以不能绑定`score`属性，试图绑定`score`将得到AttributeError的错误。
+
+使用`__slots__`要注意，`__slots__`定义的属性仅对当前类实例起作用，对继承的子类是不起作用的。除非在子类中也定义`__slots__`，这样，子类实例允许定义的属性就是自身的`__slots__`**加上父类的`__slots__`**。
+
+### 使用`@property`
+
+`@property`是一个装饰器，负责把一个方法变成属性。它广泛应用在类的定义中，可以让调用者写出简短的代码，同时保证对参数进行必要的检查，这样，程序运行时就减少了出错的可能性。
+
+#### 练习
+
+题目：请利用@property给一个Screen对象加上width和height属性，以及一个只读属性resolution：
+
+```py
+class Screen(object):
+    
+    @property
+    def width(self):
+        return self.__width
+
+    @width.setter
+    def width(self,value):
+        self.__width=value
+
+    @property
+    def height(self):
+        return self.__height
+
+    @height.setter
+    def height(self,value):
+        self.__height=value
+
+    @property
+    def resolution(self):
+        return self.__width*self.__height
+
+s=Screen()
+s.width=1024
+s.height=768
+print(s.resolution) # 320000
+```
+
+### 多重继承
+
+由于Python允许使用多重继承，因此，MixIn就是一种常见的设计。
+
+只允许单一继承的语言（如Java）不能使用MixIn的设计。但是C#也是支持多重继承的，这个跟Python应该一样。
+
+### 定制类
+
+下面是最常用的几个定制方法，还有很多可定制的方法，请参考[Python的官方文档](https://docs.python.org/3/reference/datamodel.html#special-method-names)。
+`__str__`
+`__repr__`
+`__iter__`
+`__getitem__`
+`__getattr__`
+`__call__`
+
+### 使用枚举类
+
+**`type()`**：动态创建类
+```py
+def fn(self, name='world'): # 先定义函数
+    print('Hello, %s.' % name)
+Hello = type('Hello', (object,), dict(hello=fn)) # 动态创建Hello class
+```
+要创建一个class对象，type()函数依次传入3个参数：
+
+* class的名称；
+* 继承的父类集合，注意Python支持多重继承，如果只有一个父类，别忘了tuple的单元素写法；
+* class的方法名称与函数绑定，这里我们把函数fn绑定到方法名hello上。
+
+正常情况下，我们都用`class Xxx...`来定义类，但是，`type()`函数也允许我们动态创建出类来，也就是说，动态语言本身支持运行期动态创建类，这和静态语言有非常大的不同，要在静态语言运行期创建类，必须构造源代码字符串再调用编译器，或者借助一些工具生成字节码实现，本质上都是动态编译，会非常复杂。
+
+**`metaclass`**:
+> todo:讲的有点复杂，没仔细看，回头再仔细研究下。
+
+## 错误、调试和测试
+
+### 错误处理
+
+通过`try...except...finally...`的错误处理机制来处理程序错误，跟其他语言类似。
+
+### 调试
+
+### 单元测试
+
+### 文档测试
+> todo:只是大概秒了一眼，没细看
+
+## IO编程（同步）
+
+### 文件读写
+
+文件读写是通过`open()`函数打开的文件对象完成的。使用`with`语句操作文件IO是个好习惯。
+
+### `StringIO`和`BytesIO`
+
+`StringIO`和`BytesIO`是在内存中操作`str`和`bytes`的方法，使得和读写文件具有一致的接口。
+
+### 操作文件和目录
+
+Python的`os`模块封装了操作系统的目录和文件操作，要注意这些函数有的在`os`模块中，有的在`os.path`模块中。
+
+### 序列化
+
+Python提供了`pickle`模块来实现序列化。我们把变量从内存中变成可存储或传输的过程称之为序列化，在Python中叫pickling，在其他语言中也被称之为serialization，marshalling，flattening等等，都是一个意思。序列化之后，就可以把序列化后的内容写入磁盘，或者通过网络传输到别的机器上。反过来，把变量内容从序列化的对象重新读到内存里称之为反序列化，即unpickling。
+
+Python语言特定的序列化模块是pickle，但如果要把序列化搞得更通用、更符合Web标准，就可以使用`json`模块。如果我们要在不同的编程语言之间传递对象，就必须把对象序列化为标准格式，比如XML，但更好的方法是序列化为JSON，因为JSON表示出来就是一个字符串，可以被所有语言读取，也可以方便地存储到磁盘或者通过网络传输。JSON不仅是标准格式，并且比XML更快，而且可以直接在Web页面中读取，非常方便。
+
+`json`模块的`dumps()`和`loads()`函数是定义得非常好的接口的典范。当我们使用时，只需要传入一个必须的参数。但是，当默认的序列化或反序列机制不满足我们的要求时，我们又可以传入更多的参数来定制序列化或反序列化的规则，既做到了接口简单易用，又做到了充分的扩展性和灵活性。
+
+## 进程和线程
+
+线程是最小的执行单元，而进程由至少一个线程组成。如何调度进程和线程，完全由操作系统决定，程序自己不能决定什么时候执行，执行多长时间。
+
+多进程和多线程的程序涉及到同步、数据共享的问题，编写起来更复杂。
+
+### 多进程
+
+> todo:只是过了一遍，里面的代码没有自己敲，不过基本能看懂，后面还需要找时间详细了解。
+
+在Unix/Linux下，可以使用`fork()`调用实现多进程。
+
+要实现跨平台的多进程，可以使用`multiprocessing`模块。
+
+进程间通信是通过`Queue`、`Pipes`等实现的。
+
+### 多线程
+
+多线程编程，模型复杂，容易发生冲突，必须用锁加以隔离，同时，又要小心死锁的发生。
+
+Python解释器由于设计时有GIL全局锁，导致了多线程无法利用多核。多线程的并发在Python中就是一个美丽的梦。
+
+
+### ThreadLocal
+
+### 分布式进程
+> todo:没看。
+
+## 正则表达式
+> todo:没看
+
+## 常用内置模块
+
+### `datetime`
+`datetime`表示的时间需要时区信息才能确定一个特定的时间，否则只能视为本地时间。
+
+如果要存储`datetime`，最佳方法是将其转换为`timestamp`再存储，因为`timestamp`的值与时区完全无关。
+
+### `collections`
+
+collections是Python内建的一个集合模块，提供了许多有用的集合类。
+
+* `namedtuple`
+* `deque`
+* `defaultdict`
+* `OrderedDict`
+* `Counter`
+
+### base64
+Base64是一种用64个字符来表示任意二进制数据的方法。
+
+### struct
+
+> todo：大概过一遍，没仔细看
+
+### hashlib
+
+Python的`hashlib`提供了常见的摘要算法，如MD5，SHA1等等。
+
+#### hmac
+
+> todo:没仔细看
+
+### itertools
+
+> todo:没看
+
+### contextlib
+
+> todo:没看
+
+### urllib
+
+> todo:没看
+
+### XML
+
+> todo:没看
+
+### HTMLParser
+
+> todo:没看
+
+## 常用第三方模块
+
+> todo :没看
+
+Pillow、requests、chardet
+
+## virtualenv
+
+> todo： 没看
+
+virtualenv为应用提供了隔离的Python运行环境，解决了不同应用间多版本的冲突问题。
+
+## 图形界面
+
+Python支持多种图形界面的第三方库，包括：
+
+* Tk
+* wxWidgets
+* Qt
+* GTK
+* ....
+
+但是Python自带的库是支持Tk的Tkinter，使用Tkinter，无需安装任何包，就可以直接使用。
+
+## 网络编程
+
+由于你的电脑上可能不止浏览器，还有QQ、Skype、Dropbox、邮件客户端等，不同的程序连接的别的计算机也会不同，所以，更确切地说，网络通信是两台计算机上的两个进程之间的通信。比如，浏览器进程和新浪服务器上的某个Web服务进程在通信，而QQ进程是和腾讯的某个服务器上的某个进程在通信。
+
+网络编程对所有开发语言都是一样的，Python也不例外。用Python进行网络编程，就是在Python程序本身这个进程内，连接别的服务器进程的通信端口进行通信。
+
+### TCP/IP简介
+
+### TCP编程
+
+一个例子：
+```py
+# 服务器端：
+# -*- coding: utf-8 -*-
+
+import socket
+import threading
+import time
+
+s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+s.bind(('127.0.0.1',9988))
+
+s.listen(5)
+print('waiting fo connection....')
+
+def tcplink(sock, addr):
+    print('Accept new connection from %s:%s...' % addr)
+    sock.send(b'Welcome!')
+    while True:
+        data = sock.recv(1024)
+        time.sleep(1)
+        if not data or data.decode('utf-8') == 'exit':
+            break
+        sock.send(('Hello, %s!' % data.decode('utf-8')).encode('utf-8'))
+    sock.close()
+    print('Connection from %s:%s closed.' % addr)
+
+while True:
+    # 接受客户端一个新连接
+    sock,addr=s.accept()
+    t = threading.Thread(target=tcplink, args=(sock, addr))
+    t.start()
+```
+```py
+# -*- coding: utf-8 -*-
+
+import socket
+
+s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+
+s.connect(('127.0.0.1',9988))
+
+# 接收欢迎消息:
+print(s.recv(1024).decode('utf-8'))
+for data in [b'Michael', b'Tracy', b'Sarah']:
+    # 发送数据:
+    s.send(data)
+    print(s.recv(1024).decode('utf-8'))
+s.send(b'exit')
+s.close()
+```
+运行结果：
+
+### UDP编程

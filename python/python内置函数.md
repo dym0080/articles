@@ -16,3 +16,24 @@ for i, value in enumerate(['A', 'B', 'C']):
 0 A
 1 B
 2 C
+
+## `callable()`
+通过`callable()`函数，我们就可以判断一个对象是否是“可调用”对象。在Python中函数也是属于对象。
+
+一个对象实例可以有自己的属性和方法，当我们调用实例方法时，我们用`instance.method()`来调用。能不能直接在实例本身上调用呢？在Python中，答案是肯定的。任何类，只需要定义一个`__call__()`方法，就可以直接对实例进行调用,比如下面的`s()`。
+```py
+class Student(object):
+    def __init__(self, name):
+        self.name = name
+
+    def __call__(self):
+        print('My name is %s.' % self.name)
+s=Student()
+callable(Student()) # True
+callable(s())       # True
+
+callable(abs)       # True
+callable([1, 2, 3]) # False
+callable(None)      # False
+callable('abc')     # False
+```
