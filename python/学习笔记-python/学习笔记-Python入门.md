@@ -106,6 +106,13 @@
         - [TCP/IP简介](#tcpip简介)
         - [TCP编程](#tcp编程)
         - [UDP编程](#udp编程)
+    - [电子邮件](#电子邮件)
+        - [SMTP发送邮件](#smtp发送邮件)
+        - [POP3收取邮件](#pop3收取邮件)
+    - [访问数据库](#访问数据库)
+        - [使用SQLLite](#使用sqllite)
+        - [使用MySQL](#使用mysql)
+        - [使用SQLAlchemy](#使用sqlalchemy)
 
 <!-- /TOC -->
 
@@ -1109,7 +1116,7 @@ while True:
 ```
 ```py
 # -*- coding: utf-8 -*-
-
+# 客户端
 import socket
 
 s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -1127,4 +1134,36 @@ s.close()
 ```
 运行结果：
 
+![](/assets/py/1/1.png)
+
 ### UDP编程
+
+TCP是建立可靠连接，并且通信双方都可以以流的形式发送数据。相对TCP，UDP则是面向无连接的协议。
+
+使用UDP协议时，不需要建立连接，只需要知道对方的IP地址和端口号，就可以直接发数据包。但是，能不能到达就不知道了。
+
+虽然用UDP传输数据不可靠，但它的优点是和TCP比，速度快，对于不要求可靠到达的数据，就可以使用UDP协议。
+
+UDP的使用与TCP类似，但是不需要建立连接。此外，服务器绑定UDP端口和TCP端口互不冲突，也就是说，UDP的9999端口与TCP的9999端口可以各自绑定。
+
+## 电子邮件
+
+### SMTP发送邮件
+
+> todo:大概过了一遍，没细看，没实践敲代码。
+
+### POP3收取邮件
+
+> todo:没看
+
+## 访问数据库
+
+### 使用SQLLite
+
+### 使用MySQL
+
+### 使用SQLAlchemy
+
+> 没看
+
+ORM框架的作用就是把数据库表的一行记录与一个对象互相做自动转换。在Python中，最有名的ORM框架是SQLAlchemy。
