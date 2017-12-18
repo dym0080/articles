@@ -32,3 +32,19 @@ pip install flask
 安装时间：20171217
 安装结果：
 ![](/assets/py/typc/flask-install.png)
+
+* 异步框架`aiohttp`
+```bash
+pip install aiohttp
+```
+安装时间：20171218
+安装结果：
+![](/assets/py/typc/intall-aiohttp.png)
+
+* MySQL的Python异步驱动程序`aiomysql`
+```bash
+pip install aiomysql
+```
+安装时间：20171218
+安装结果：
+![](/assets/py/typc/install-aiomysql.png)

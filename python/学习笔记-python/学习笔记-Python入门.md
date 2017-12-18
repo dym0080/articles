@@ -113,6 +113,12 @@
         - [使用SQLLite](#使用sqllite)
         - [使用MySQL](#使用mysql)
         - [使用SQLAlchemy](#使用sqlalchemy)
+    - [WEB开发](#web开发)
+        - [HTTP协议简介](#http协议简介)
+        - [HTML简介](#html简介)
+        - [WSGI接口](#wsgi接口)
+        - [使用web框架](#使用web框架)
+        - [使用模板](#使用模板)
 
 <!-- /TOC -->
 
@@ -1167,3 +1173,56 @@ UDP的使用与TCP类似，但是不需要建立连接。此外，服务器绑�
 > 没看
 
 ORM框架的作用就是把数据库表的一行记录与一个对象互相做自动转换。在Python中，最有名的ORM框架是SQLAlchemy。
+
+## WEB开发
+
+### HTTP协议简介
+
+### HTML简介
+
+### WSGI接口
+
+### 使用web框架
+
+```py
+# -*- coding: utf-8 -*-
+
+# 使用flask框架
+
+from flask import Flask
+from flask import request
+
+app=Flask(__name__)
+
+@app.route('/',methods=['GET','POST'])
+def home():
+    return '<h1>Home</h1>'
+
+@app.route('/signin',methods=['GET'])
+def sign_form():
+     return '''<form action="/signin" method="post">
+              <p><input name="username"></p>
+              <p><input name="password" type="password"></p>
+              <p><button type="submit">Sign In</button></p>
+              </form>'''
+
+@app.route('/signin', methods=['POST'])
+def signin():
+    # 需要从request对象读取表单内容：
+    if request.form['username']=='admin' and request.form['password']=='123':
+        return '<h3>Hello, admin!</h3>'
+    return '<h3>Bad username or password.</h3>'
+
+if __name__ == '__main__':
+    app.run()
+
+```
+
+### 使用模板
+
+有了MVC，我们就分离了Python代码和HTML代码。HTML代码全部放到模板里，写起来更有效率。
+
+## 异步IO
+
+> todo:没看
+
