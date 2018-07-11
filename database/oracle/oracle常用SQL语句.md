@@ -39,6 +39,41 @@ exp user/pwd@orcl file=d:\backup\bck.dmp owner=(system,sys)
  ```
  - 还原到远程服务器
   imp 用户名/密码@远程的IP:端口/实例 file=存放的位置:\文件名称.dmp full=y
+
+  #### 5. 用户操作
+
+  - 查询用户
+  使用plsql连接某个数据库后查询该数据库下的用户：
+
+  ```sql
+  select * from dba_users a where a.account_status='OPEN';
+  ```
+
+  - 删除用户
+
+  使用plsql连接某个数据库后，删除该数据库下的用户user123。删除用户，及级联关系也删除掉。
+
+  ```sql
+  drop user user123 cascade;
+  ```
+
+  #### 6. 表空间操作
+  
+  - 查看表空间
+  ```sql
+  select * from dba_tablespaces
+  ```
+  - 查看表空间路径
+  ```sql
+  select * from dba_data_files; 
+  ```
+
+  - 删除表空间
+  使用plsql连接某个数据库后，参数该数据库下的命名空间TBS_123。删除表空间，及对应的表空间文件也删除掉。
+  ```sql
+  drop tablespace TBS_123 including contents and datafiles cascade constraint;
+  ```
+
   
   ## 二、Oracle表操作
   #### 1.创建表
