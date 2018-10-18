@@ -21,6 +21,10 @@
 
 * [ASP.NET缓存全解析](https://kb.cnblogs.com/page/69727/)
 
+## 设计模式相关
+
+* [深入理解DIP、IoC、DI以及IoC容器](https://www.cnblogs.com/liuhaorain/p/3747470.html#4031776)(已收藏至印象笔记)
+
 
 ## 其他
 
