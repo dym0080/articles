@@ -1,8 +1,10 @@
 
 
-最近在做小程序的时候，需要一个这样的需求
+最近在做小程序的时候，需要实现这样的需求
 > 小程序界面有九宫格抽奖、转盘抽奖界面，总共有8个抽奖产品，每个产品的中奖概率是确定的，需要根据抽奖概率进行抽奖。如下面两个图所示：
+
 ![](/assets/db/sqlserver/cj_jgg.png)
+![](/assets/db/sqlserver/cj_zp.png)
 
 ## 数据准备
 
@@ -27,7 +29,7 @@ INSERT INTO [dbo].[tblPrize] ([Id], [ProductName], [odds]) VALUES (N'8', N'谢�
 ## 两种实现方式（sqlserver存储过程实现）
 实现思想：根据中奖概率取整(odds字段中的8个整数)，把整数求和得到一个整数和A，根据这个整数和生成一个随机数B,看随机数B是在哪个范围就是中到了哪个奖品。
 
-> 下面两个实现方式的B为10000。
+> 下面两个实现方式的A为10000。
 ### 方式一
 ```sql
 ALTER PROCEDURE [dbo].[LuckyDraw]

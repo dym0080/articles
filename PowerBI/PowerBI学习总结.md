@@ -1,5 +1,26 @@
-PowerBI学习笔记
+PowerBI学习总结
 =============
+<!-- TOC -->
+
+- [PowerBI 整体介绍](#powerbi-整体介绍)
+    - [介绍](#介绍)
+    - [Power BI 的组成部分](#power-bi-的组成部分)
+    - [Power BI 中的工作流程](#power-bi-中的工作流程)
+    - [Power BI 构建基块](#power-bi-构建基块)
+- [Power BI Desktop](#power-bi-desktop)
+    - [在 Power BI Desktop 中连接到数据源](#在-power-bi-desktop-中连接到数据源)
+    - [使用 Power Query 编辑器清理和转换数据](#使用-power-query-编辑器清理和转换数据)
+    - [在 Power BI 中创建视觉对象](#在-power-bi-中创建视觉对象)
+    - [共享 Power BI 报表](#共享-power-bi-报表)
+- [Power BI 服务](#power-bi-服务)
+    - [比较 Power BI Desktop 和 Power BI 服务](#比较-power-bi-desktop-和-power-bi-服务)
+    - [网关配置](#网关配置)
+    - [数据建模](#数据建模)
+- [DAX 简介](#dax-简介)
+- [自定义列VS计算列](#自定义列vs计算列)
+- [参考资料](#参考资料)
+
+<!-- /TOC -->
 
 
 ## PowerBI 整体介绍
