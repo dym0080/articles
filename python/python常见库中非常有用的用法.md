@@ -71,6 +71,14 @@ counts = [ 0, 3, 10, 4, 1, 7, 6, 1]
 
 ### `itertools.dropwhile()`
 
+## `functools`
+
+### `functools.partial()`
+>todo
+
+### `functools.reduce()`
+>todo
+
 ## `re`
 
 `string` 对象的 `split()` 方法只适应于非常简单的字符串分割情形， 它并不允许有多个分隔符或者是分隔符周围不确定的空格。 当你需要更加灵活的切割字符串的时候，最好使用 `re.split()` 方法：
@@ -99,3 +107,10 @@ counts = [ 0, 3, 10, 4, 1, 7, 6, 1]
 3
 >>> 
 ```
+
+### `random.shuffle()`
+
+> todo
+
+## `operator`
+> todo
