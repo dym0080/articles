@@ -18,7 +18,7 @@ TypeError: 'generator' object is not subscriptable
 2
 >>> import itertools
 >>> for x in itertools.islice(g, 10, 20): #<4>
-	print(x)
+	      print(x)
 	
 13
 14
