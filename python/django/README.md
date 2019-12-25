@@ -1,4 +1,6 @@
 
+[Django 让我使用起来感觉很舒服的地方](django_advantages.md)
+
 [学习笔记-编写你的第一个Django应用](学习笔记-编写你的第一个Django应用.md)
 
 [学习笔记-Django主题指南-模型和数据库](topic_guides_models_and_databases.md)
