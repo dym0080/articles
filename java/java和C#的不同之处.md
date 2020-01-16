@@ -1,4 +1,5 @@
 # java和C#的不同之处
+
 ## for each 循环
 
 无需多说，看代码便知。
@@ -20,6 +21,7 @@ for (int item : a)
     System.out.println(item);
 }
 ```
+
 ## 定义一个常量
 
 一般是在类中定义为一个**静态**常量。这是由于只要设置为 `static` 后，这个常量只能通过类名访问，不能通过对象访问。换句话说静态常量是属于类不属于对象。如果不设置 `static`，那么就是说每个对象身上都会有这个常量。
@@ -35,3 +37,206 @@ public static const double PI = 3.14;
 ```java
 public static final double PI = 3.14;
 ```
+
+## 初始化块 （initialization block）
+
+### c#
+无此概念。
+
+### java
+
+java中有三种初始化数据域的方法：
+
+- 在构造器中设置值
+- 在声明中赋值
+- 初始化块
+
+在一个类的声明中，可以包含多个初始化块，分为**静态初始化块**和**对象初始化块**，只要构造类的对象，这些块就会执行。
+
+下面这段代码(代码来源Java核心技术卷一)展示了java很多特性。重点关注静态初始化块和对象初始化块。
+
+- 重载构造函数
+- 用 this(...)掉用另一个构造器
+- 无参构造器
+- 静态初始化块
+- 对象初始化块
+- 实例域初始化块
+
+```java
+import java.util.*;
+
+/**
+ * This program demonstrates object construction.
+ * @version 1.02 2018-04-10
+ * @author Cay Horstmann
+ */
+public class ConstructorTest
+{
+   public static void main(String[] args)
+   {
+      // fill the staff array with three Employee objects
+	  Employee[] staff = new Employee[3];
+
+      staff[0] = new Employee("Harry", 40000);
+      staff[1] = new Employee(60000);
+      staff[2] = new Employee();
+
+      // print out information about all Employee objects
+      for (Employee e : staff)
+         System.out.println("name=" + e.getName() + ",id=" + e.getId() + ",salary="
+            + e.getSalary());
+   }
+}
+
+class Employee
+{
+   private static int nextId;
+   
+   // instance field initialization
+   private int id;
+   private String name = ""; 
+   private double salary;
+   
+   // object initialization block 对象初始化块
+   {
+	  System.out.println("object initialization block");
+      id = nextId;
+      nextId++;
+   }
+  
+   // static initialization block 静态初始化块
+   static
+   {
+	  System.out.println("static initialization block");
+	  Random generator = new Random();
+      // set nextId to a random number between 0 and 9999
+      nextId = generator.nextInt(10000);
+   }
+
+   
+
+   // three overloaded constructors
+   public Employee(String n, double s)
+   {
+      name = n;
+      salary = s;
+   }
+
+   public Employee(double s)
+   {
+      // calls the Employee(String, double) constructor
+      this("Employee #" + nextId, s);
+   }
+
+   // the default constructor
+   public Employee()
+   {
+      // name initialized to ""--see above
+      // salary not explicitly set--initialized to 0
+      // id initialized in initialization block
+   }
+
+   public String getName()
+   {
+      return name;
+   }
+
+   public double getSalary()
+   {
+      return salary;
+   }
+
+   public int getId()
+   {
+      return id;
+   }
+}
+```
+代码执行结果:
+```bash
+static initialization block
+object initialization block
+object initialization block
+object initialization block
+name=Harry,id=1802,salary=40000.0
+name=Employee #1803,id=1803,salary=60000.0
+name=,id=1804,salary=0.0
+```
+从结果来看：即使静态初始化块的位置在对象初始化块的前面，但还是静态初始化块先执行，只执行一次，对象初始化块后执行，执行了3次（因为构造了三个对象）。
+
+## 包 和 命名空间
+
+C#中叫命名空间，java中叫包。用来组织类的，确保类名唯一性。假如两个程序员恰巧定义一个相同的类名，只要包名不一样就不会冲突了。
+
+### C#
+
+命名空间使用关键字 `namespace`，导入使用关键字 `using`。一般 `namespace` 的位置放在 `using` 下面。
+
+```csharp
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace com.horstmann.corejava
+{
+    public class Person
+    {
+    }
+}
+```
+
+### java
+
+包使用关键字 `package`，导入使用关键字 `import`。 `package` 的位置必须放在 `import` 上面。
+```java
+package com.horstmann.corejava;
+
+// the classes in this file are part of this package
+import java.util.*;
+import java.time.*;
+
+// import statements come after the package statement
+
+public class Person {
+
+}
+```
+
+## 继承
+
+父类 `Animal`，子类 `Dog`。下面的注释存在微小差别，在C#中习惯叫属性或字段，而在java中习惯叫域，是同一个意思。
+
+### c#
+```csharp
+public class Dog : Animal
+{
+   // 添加方法和属性（字段）
+}
+```
+
+### java
+```java
+public class Dog extends Animal
+{
+   // 添加方法和域
+}
+```
+
+## 调用父类的构造函数和方法
+### c#
+使用 `base` 关键字
+
+### java
+使用 `super` 关键字
+
+## 重写父类的方法
+
+### c#
+
+父类使用关键字 `virtual` 标记方法，子类使用关键字 `override` 重写父类的方法。
+
+### java
+
+只在子类使用 `super.` 子类方法即可。
