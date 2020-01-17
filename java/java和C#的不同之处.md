@@ -247,7 +247,7 @@ public class Dog extends Animal
 
 ## 类或方法不允许被继承
 
-C#中使用 `sealed`，成为密封类/密封方法。java中使用 `final`。不同之处知识修饰类或方法的关键字不同。
+C#中使用 `sealed`，成为密封类/密封方法。java中使用 `final`。不同之处只是修饰类或方法的关键字不同。
 
 ## 枚举
 
