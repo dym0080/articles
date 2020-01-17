@@ -1,5 +1,7 @@
 # java和C#的不同之处
 
+> 这篇文章在学习[Java核心技术卷一基础知识第10版]时开始编写的，也是我首次学习Java。在学习一个新知识的时候多跟自己已知的知识做比较和联系，这样在学到新知识的同时还可以温习和加深已知知识，更好的增强自己的知识体系网路。
+
 ## for each 循环
 
 无需多说，看代码便知。
@@ -240,3 +242,47 @@ public class Dog extends Animal
 ### java
 
 只在子类使用 `super.` 子类方法即可。
+
+子类重写父类方法也可以增加关键字，使用 `@override` 放在方法名的上面作为修饰，而不像c#那样是跟方法名在同一行的。
+
+## 类或方法不允许被继承
+
+C#中使用 `sealed`，成为密封类/密封方法。java中使用 `final`。不同之处知识修饰类或方法的关键字不同。
+
+## 枚举
+
+### c#
+如果需要向java那样设置 `S,M,L,XL`，就需要添加如 `Description` 来装饰。
+
+可以给第一项设置一个初始值，后面的则是递增。不设置默认是从 `0` 开始
+
+```csharp
+enum ClothSize
+   {
+      [Description("S")]
+      SMALL=2,
+      [Description("M")]
+      MEDIUM,
+      [Description("L")]
+      LARGE,
+      [Description("XL")]
+      EXTRA_LARGE
+   }
+
+```
+
+### java
+
+java的枚举类型中可以有构造器、方法和域。而C#没有。
+
+```java
+enum ClothSize
+{
+   SMALL("S"), MEDIUM("M"), LARGE("L"), EXTRA_LARGE("XL");
+
+   private Size(String abbreviation) { this.abbreviation = abbreviation; }
+   public String getAbbreviation() { return abbreviation; }
+
+   private String abbreviation;
+}
+```
