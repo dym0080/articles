@@ -206,23 +206,36 @@ public class Person {
 }
 ```
 
-## 继承
 
-父类 `Animal`，子类 `Dog`。下面的注释存在微小差别，在C#中习惯叫属性或字段，而在java中习惯叫域，是同一个意思。
+## 继承
 
 ### c#
 ```csharp
-public class Dog : Animal
+// 类同时继承类和多接口
+class Dog : Animal,IComparable,ILoger
 {
-   // 添加方法和属性（字段）
+
+}
+
+// 接口继承接口
+interface IPowered : IMoveable
+{
+
 }
 ```
 
 ### java
 ```java
-public class Dog extends Animal
+// 类同时继承类和多接口
+class Dog extends Animal implements Comparable,Loger
 {
-   // 添加方法和域
+
+}
+
+// 接口继承接口
+interface Powered extends Moveable
+{
+
 }
 ```
 
@@ -284,5 +297,38 @@ enum ClothSize
    public String getAbbreviation() { return abbreviation; }
 
    private String abbreviation;
+}
+```
+
+## 接口中的默认方法
+
+假如接口开始只有方法 `Size`，后面因需要新增了方法 `IsEmpty`,如果这个方法被设置为接口的默认方法，那么所有继承该接口的类都不需要去实现这个新增的方法。如果新增的不是默认方法，那么所有继承该接口的类都需要去实现该新增方法，不然不会编译通过。
+
+默认方法可以调用接口中其他的方法。
+
+### C#
+C#8.0才开始支持。
+```csharp
+public interface ICollection
+{
+   int Size();
+   Boolean IsEmpty() //后面新增的
+   {
+      return Size() == 0;
+   }
+}
+```
+
+### java
+
+需要使用关键字 `default` 标记，而C#不需要。
+```java
+public interface Collection
+{
+   int Size();
+   default boolean IsEmpty() //后面新增的
+   {
+      return Size() == 0;
+   }
 }
 ```
