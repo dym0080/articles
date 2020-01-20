@@ -332,3 +332,49 @@ public interface Collection
    }
 }
 ```
+
+## lambda表达式
+
+c#使用 `=>`。java使用 `->`，java8才开始支持lambda。
+
+## 泛型方法
+
+通过代码比较两者的不同。
+
+### c#
+和java不同，这里需要使用 `where T : IComparable`,不然编译时会显示方法不存在 `CompareTo`。java是使用 `extends Comparable`。
+```csharp
+// 计算数组中的最小元素的泛型方法
+public static T GetMinItem<T>(T[] a) where T : IComparable
+{
+   if (a == null || a.Length == 0) return default(T);
+   T smallest = a[0];
+   for (int i = 1; i < a.Length; i++)
+   {
+         if (smallest.CompareTo(a[i]) > 0)
+         {
+            smallest = a[i];
+         }
+   }
+   return smallest;
+}
+```
+### java 
+
+> 注意： 这里 `Comparable` 虽然是接口，但是需要使用 `extends`。原因参考[java技术核心卷一]的第8.4节。
+```java
+// 计算数组中的最小元素的泛型方法
+public static <T extends Comparable> T getMinItem(T[] a) 
+{
+   if (a == null || a.length == 0) return null;
+   T smallest = a[0];
+   for (int i = 1; i < a.length; i++)
+   {
+      if (smallest.compareTo(a[i]) > 0) 
+      {
+         smallest = a[i];
+      }
+   }
+   return smallest;
+}
+```
