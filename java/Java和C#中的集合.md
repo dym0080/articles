@@ -75,9 +75,16 @@ java库中具体的集合类如下表:
 java库中集合框架中的类关系如下表:
 ![](../assets/java/java_set_class2.png)
 
+java库中集合框架中遗留的类关系如下表:
+![](../assets/java/java_set_class3.png)
+
 ### 链表：`LinkedList`
 
-### 数据列表： `ArrayList`
+### 数组列表： `ArrayList`, `Vector`
+
+在需要动态数组时， 可能会使用 `Vector` 类。为什么要用 `ArrayList` 取代Vector 呢？ 原因很简单：`Vector` 类的所有方法都是同步的。可以由两个线程安全地访问一个 `Vector` 对象。但是， 如果由一个线程访问 `Vector`, 代码要在同步操作上耗费大量的时间。这种情况还是很常见的。而 `ArrayList` 方法不是同步的，因此， 建议在不需要同步时使用 `ArrayList`, 而不要使用`Vector`。
+
+java 可以使用泛型和非泛型的 `ArrayList`，比如`ArrayList<String> myAL =new ArrayList<String>()`和 `ArrayList myAL = new ArrayList()`，在C#中 `ArrayList` 不支持泛型，只能是`ArrayList myAL = new ArrayList()`，需要泛型的话可以使用 `List<T>` 来替代。
 
 ### 散列表：  `HashSet`
 
@@ -92,6 +99,8 @@ java库中集合框架中的类关系如下表:
 Java 类库为映射提供了两个通用的实现：`HashMap` 和 `TreeMap`。这两个类都实现了`Map` 接口。
 
 ### HashTable
+
+`Hashtable` 类与 `HashMap` 类的作用一样， 实际上， 它们拥有相同的接口。与 `Vector` 类的方法一样。 `Hashtable` 的方法也是同步的。如果对同步性或与遗留代码的兼容性没有任何要求，就应该使用 `HashMap`。如果需要并发访问， 则要使用 `ConcurrentHashMap`。
 
 ### 枚举
 
