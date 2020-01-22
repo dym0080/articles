@@ -2,6 +2,14 @@
 
 > 这篇文章在学习[Java核心技术卷一基础知识第10版]时开始编写的，也是我首次学习Java。在学习一个新知识的时候多跟自己已知的知识做比较和联系，这样在学到新知识的同时还可以温习和加深已知知识，更好的增强自己的知识体系网路。
 
+## 简要区别
+
+| Items | C# | Java | Remark |
+| ----- | -- | ---- | ------ |
+| 定义一个字符串变量 | `string s = "abc"` | `String s = "abc";`| 在c#中 `string` 是关键字，`String` 是类 |
+| 入口函数 | `Main` 函数首字母需要大写 | `main` 函数首字母需要小写 | |
+| 方法名 | 方法名跟类名一样使用首字母大写 | 方法名首字母小写，类名首字母大写 | |
+
 ## for each 循环
 
 无需多说，看代码便知。
@@ -343,6 +351,8 @@ c#使用 `=>`。java使用 `->`，java8才开始支持lambda。
 
 ### c#
 和java不同，这里需要使用 `where T : IComparable`,不然编译时会显示方法不存在 `CompareTo`。java是使用 `extends Comparable`。
+
+不能把 `null` 赋值给泛型类型，需要使用 `default` 关键字,如下面代码中的 `default(T)`。
 ```csharp
 // 计算数组中的最小元素的泛型方法
 public static T GetMinItem<T>(T[] a) where T : IComparable
@@ -377,4 +387,36 @@ public static <T extends Comparable> T getMinItem(T[] a)
    }
    return smallest;
 }
+```
+
+## 动态数组
+
+### C#
+
+C#中 `ArrayList` 不存在泛型，不存在 `ArrayList<T>`, 需要泛型是使用泛型类 `List<T>`。
+
+`ArrayList` 中的元素是 `Object` 类型，存在装箱和拆箱的开销，因此尽量避免使用。
+
+`List<T>`是泛型类， `IList<T>`是泛型接口，语句 `<1>` 可以改成：
+- `IList<string> arr2 = new List<string>()`
+- `var arr2 = new List<string>()`
+
+```csharp
+ArrayList arr1 = new ArrayList(); 
+List<string> arr2 = new List<string>(); // <1>
+```
+
+### Java
+
+Java中 `ArrayList` 存在泛型，即存在 `ArrayList<T>`。
+
+`List<T>`是泛型接口，不是泛型类。语句 `<2>` 可以改写成：
+- `List<String> arr2 = new ArrayList<String>()` 
+- `List<String> arr2 = new ArrayList<>()`  --这种写法最普遍
+- `ArrayList<String> arr2 = new ArrayList<>()`
+- `var arr2 = new ArrayList<String>()`
+
+```java
+ArrayList arr1 = new ArrayList(); 
+ArrayList<String> arr2 = new ArrayList<String>(); // <2>
 ```
