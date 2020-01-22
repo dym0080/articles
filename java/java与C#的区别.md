@@ -9,6 +9,7 @@
 | 定义一个字符串变量 | `string s = "abc"` | `String s = "abc";`| 在c#中 `string` 是关键字，`String` 是类 |
 | 入口函数 | `Main` 函数首字母需要大写 | `main` 函数首字母需要小写 | |
 | 方法名 | 方法名跟类名一样使用首字母大写 | 方法名首字母小写，类名首字母大写 | |
+| lambda表达式| 使用 `=>`| 使用 `->` | java8才开始支持lambda。|
 
 ## for each 循环
 
@@ -340,10 +341,6 @@ public interface Collection
    }
 }
 ```
-
-## lambda表达式
-
-c#使用 `=>`。java使用 `->`，java8才开始支持lambda。
 
 ## 泛型方法
 
