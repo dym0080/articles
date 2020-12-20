@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>test</title>
+        <script>
+            function countdown(n){
+                if(n < 1){
+                    return [];
+                }else{
+                    var arr = countdown(n-1);
+                    arr.push(n);
+                    console.log(arr);
+                    return arr;
+                }
+                
+            }
+
+            function countdown2(n){
+                if(n < 1){
+                    return [];
+                }else{
+                    var arr = countdown(n-1);
+                    arr.push(n);
+                    console.log(arr);
+                    return arr;
+                }
+                
+            }
+            countdown2(3);
+
+        </script>
+    </head>
+    <body>
+        <p>teste</p>
+
+    </body>
+</html>

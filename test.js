@@ -1,17 +1,15 @@
-var curry = require('lodash').curry;
+function Bird(name) {
+  this.name = name;
+  this.numLegs = 2;
+}
 
-var match = curry(function(what, str) {
-  return str.match(what);
-});
+let canary = new Bird("Tweety");
+let ownProps = [];
+// Only change code below this line
+for(let property in canary){
+  if(canary.hasOwnProperty(property)){
+    ownProps.push(property);
+  }
+}
 
-var replace = curry(function(what, replacement, str) {
-  return str.replace(what, replacement);
-});
-
-var filter = curry(function(f, ary) {
-  return ary.filter(f);
-});
-
-var map = curry(function(f, ary) {
-  return ary.map(f);
-});
+console.log(ownProps);
